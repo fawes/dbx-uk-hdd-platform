@@ -1,0 +1,18 @@
+bundle:
+  name: dbx-uk-hdd-platform
+
+resources:
+  pipelines:
+    uk_hdd_lakeflow_pipeline:
+      name: "UK HDD ECMWF 00z-12z Pipeline"
+      catalog: workspace
+      target: uk_hdd
+      serverless: true
+      libraries:
+        - file:
+            path: ./src/uk_hdd_pipeline.py
+
+targets:
+  dev:
+    mode: development
+    default: true

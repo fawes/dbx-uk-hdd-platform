@@ -1,0 +1,5 @@
+.venv/
+.databricks/
+__pycache__/
+*.pyc
+data/sample_ecmwf/
