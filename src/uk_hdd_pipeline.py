@@ -18,14 +18,14 @@ def bronze_ecmwf_raw():
     )
 
 
-# 2. SILVER LAYER: Physics-validated Delta table with Liquid Clustering & Iceberg UniForm
+# 2. SILVER LAYER: Physics-validated Delta table with Liquid Clustering & Iceberg UniForm V3
 @dp.table(
     name="silver_uk_temp",
-    comment="Validated UK city temperatures with hourly Heating Degree Days (HDD) and Iceberg UniForm",
+    comment="Validated UK city temperatures with hourly Heating Degree Days (HDD) and Iceberg UniForm V3",
     cluster_by=["city", "forecast_cycle"],
     table_properties={
         "delta.columnMapping.mode": "name",
-        "delta.enableIcebergCompatV2": "true",
+        "delta.enableIcebergCompatV3": "true",
         "delta.universalFormat.enabledFormats": "iceberg",
     },
 )
