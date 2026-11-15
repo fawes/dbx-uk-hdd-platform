@@ -12,6 +12,19 @@ resources:
         - file:
             path: ./src/uk_hdd_pipeline.py
 
+  jobs:
+    uk_hdd_end_to_end_job:
+      name: "UK HDD ECMWF 00z-12z Daily Orchestrator"
+      schedule:
+        quartz_cron_expression: "0 0 6,18 * * ?"
+        timezone_id: "UTC"
+        pause_status: "UNPAUSED"
+      tasks:
+        - task_key: run_uk_hdd_lakeflow_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.uk_hdd_lakeflow_pipeline.id}
+            full_refresh: false
+
 targets:
   dev:
     mode: development
