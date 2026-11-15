@@ -80,3 +80,31 @@ def gold_uk_hdd_shifts():
             .otherwise("NORMAL_DEMAND"),
         )
     )
+
+
+# 4. GOLD AI LAYER: Serverless LLM Trader Commentary via Databricks ai_query()
+@dp.table(
+    name="gold_uk_trader_ai_brief",
+    comment="AI-generated UK gas trading desk commentary summarizing 00z vs 12z HDD shifts",
+)
+def gold_uk_trader_ai_brief():
+    return spark.sql("""
+        SELECT
+            station_id,
+            city,
+            hdd_00z,
+            hdd_12z,
+            hdd_shift_delta,
+            trading_signal,
+            ai_query(
+                'databricks-meta-llama-3-3-70b-instruct',
+                CONCAT(
+                    'You are a UK National Balancing Point (NBP) gas trading analyst. ',
+                    'In 2 concise sentences, explain the commercial heating demand impact for ', city,
+                    ' where the ECMWF 12z run shifted 24h Heating Degree Days from ', CAST(hdd_00z AS STRING),
+                    ' to ', CAST(hdd_12z AS STRING), ' (delta +', CAST(hdd_shift_delta AS STRING),
+                    '), triggering signal ', trading_signal, '.'
+                )
+            ) AS ai_trader_commentary
+        FROM workspace.uk_hdd.gold_uk_hdd_shifts
+    """)
